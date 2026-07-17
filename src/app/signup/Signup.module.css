@@ -1,0 +1,53 @@
+.gridContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  text-align: left;
+}
+
+@media (min-width: 600px) {
+  .gridContainer {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  /* Make some elements span full width if needed */
+  .gridContainer > div:nth-child(1),
+  .gridContainer > div:nth-child(2),
+  .gridContainer > div:nth-child(3),
+  .gridContainer > div:nth-child(4) {
+    grid-column: span 2;
+  }
+}
+
+.selectGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.selectGroup select {
+  width: 100%;
+  padding: 1.2rem 3rem 1.2rem 1.5rem;
+  border: 1px solid hsl(var(--border-light));
+  border-radius: var(--radius-md);
+  font-size: 1.5rem;
+  background: hsl(var(--bg-main));
+  color: hsl(var(--text-main));
+  transition: var(--transition-fast);
+  appearance: none;
+  cursor: pointer;
+}
+
+.selectGroup select:focus {
+  outline: none;
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 0 3px hsla(var(--primary), 0.1);
+}
+
+.selectGroup i {
+  position: absolute;
+  right: 1.5rem;
+  color: hsl(var(--text-muted));
+  font-size: 1.2rem;
+  pointer-events: none;
+}

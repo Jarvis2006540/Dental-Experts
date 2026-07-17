@@ -1,0 +1,215 @@
+.bookingContainer {
+  min-height: calc(100vh - 80px); /* Adjust for header */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10rem 2rem 4rem;
+  background: linear-gradient(135deg, hsla(var(--primary-light), 0.05) 0%, hsla(var(--bg-muted), 1) 100%);
+}
+
+.bookingCard {
+  background: hsl(var(--bg-card));
+  padding: 4rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 800px;
+}
+
+/* Stepper */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  padding: 1rem;
+  font-weight: 600;
+  color: hsl(var(--text-muted));
+  border-bottom: 4px solid hsl(var(--border-light));
+  transition: all var(--transition-fast);
+}
+
+.activeStep {
+  color: hsl(var(--primary));
+  border-bottom-color: hsl(var(--primary));
+}
+
+.stepLine {
+  display: none; /* Can be used for a line connecting circles if design changes */
+}
+
+.stepTitle {
+  font-size: 2.4rem;
+  color: hsl(var(--text-main));
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Step 1: Doctor Grid */
+.doctorGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.doctorCard {
+  border: 2px solid hsl(var(--border-light));
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.doctorCard:hover {
+  border-color: hsl(var(--primary-light));
+  transform: translateY(-2px);
+}
+
+.selectedCard {
+  border-color: hsl(var(--primary));
+  background: hsla(var(--primary), 0.05);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Step 2: Date & Time */
+.formGroup {
+  margin-bottom: 2.5rem;
+}
+
+.formGroup label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: hsl(var(--text-main));
+}
+
+.inputField {
+  width: 100%;
+  padding: 1.2rem;
+  border: 1px solid hsl(var(--border-light));
+  border-radius: var(--radius-md);
+  font-size: 1.6rem;
+  color: hsl(var(--text-main));
+  background: hsl(var(--bg-main));
+}
+
+.inputField:focus {
+  outline: none;
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 0 3px hsla(var(--primary), 0.1);
+}
+
+.timeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1.5rem;
+}
+
+.timeSlot {
+  border: 1px solid hsl(var(--border-light));
+  padding: 1rem;
+  text-align: center;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.timeSlot:hover {
+  border-color: hsl(var(--primary));
+}
+
+.selectedTime {
+  background: hsl(var(--primary));
+  color: white;
+  border-color: hsl(var(--primary));
+}
+
+/* Step 3: Confirm */
+.summaryBox {
+  background: hsla(var(--bg-muted), 1);
+  padding: 2rem;
+  border-radius: var(--radius-md);
+  border: 1px solid hsl(var(--border-light));
+}
+
+.summaryItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid hsl(var(--border-light));
+}
+
+.summaryItem:last-child {
+  border-bottom: none;
+}
+
+.summaryItem span {
+  color: hsl(var(--text-muted));
+}
+
+/* Actions */
+.actionRow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid hsl(var(--border-light));
+}
+
+.btnSecondary {
+  padding: 1.2rem 3rem;
+  border-radius: var(--radius-pill);
+  font-size: 1.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid hsl(var(--border-light));
+  background: transparent;
+  color: hsl(var(--text-main));
+  transition: var(--transition-fast);
+}
+
+.btnSecondary:hover {
+  background: hsl(var(--bg-muted));
+}
+
+.errorAlert {
+  background: #fef2f2;
+  color: #991b1b;
+  padding: 1.5rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 2rem;
+  border: 1px solid #f87171;
+  text-align: center;
+}
+
+/* Success State */
+.successState {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.successIcon {
+  font-size: 6rem;
+  color: hsl(var(--primary));
+  margin-bottom: 2rem;
+}
+
+.successState h2 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+}
+
+.successState p {
+  font-size: 1.6rem;
+  color: hsl(var(--text-muted));
+  max-width: 500px;
+  margin: 0 auto;
+}

@@ -1,0 +1,277 @@
+.main {
+  padding-top: 0; /* Header is fixed, but hero covers it */
+}
+
+.section {
+  padding: 8rem 0;
+}
+
+.bgMuted {
+  background-color: hsl(var(--bg-muted));
+}
+
+/* Animations */
+.hidden {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* HERO SECTION */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(to right, hsla(var(--bg-main), 0.9) 0%, hsla(var(--bg-main), 0.4) 100%), url('https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  padding-top: 8rem;
+}
+
+.heroContent {
+  max-width: 650px;
+}
+
+.heroTitle {
+  font-size: clamp(4rem, 6vw, 6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 2rem;
+  color: hsl(var(--text-main));
+}
+
+.heroText {
+  font-size: 1.8rem;
+  color: hsl(var(--text-muted));
+  margin-bottom: 3rem;
+  line-height: 1.8;
+}
+
+/* ABOUT SECTION */
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .grid2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.aboutImage {
+  position: relative;
+}
+
+.aboutImage img {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.aboutImage::before {
+  content: '';
+  position: absolute;
+  top: -2rem;
+  left: -2rem;
+  width: 100%;
+  height: 100%;
+  border: 3px solid hsl(var(--primary));
+  border-radius: var(--radius-lg);
+  z-index: -1;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  background-color: hsla(var(--primary), 0.1);
+  color: hsl(var(--primary));
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* SERVICES SECTION */
+.servicesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .servicesGrid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.servicesCol {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.serviceCard {
+  background: hsl(var(--bg-card));
+  padding: 3rem 2rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  transition: var(--transition-smooth);
+  border-bottom: 3px solid transparent;
+}
+
+.serviceCard:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: hsl(var(--primary));
+}
+
+.serviceIcon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 2rem;
+  background: hsla(var(--primary), 0.1);
+  color: hsl(var(--primary));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  transition: var(--transition-smooth);
+}
+
+.serviceCard:hover .serviceIcon {
+  background: hsl(var(--primary));
+  color: white;
+  transform: rotateY(180deg);
+}
+
+.serviceCard h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.servicesCenter {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .servicesCenter {
+    display: block;
+    text-align: center;
+  }
+  .centerImg {
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-lg);
+    border: 10px solid hsl(var(--bg-card));
+    margin: 0 auto;
+  }
+}
+
+/* TEAM SECTION */
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+}
+
+.teamCard {
+  background: hsl(var(--bg-card));
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-smooth);
+}
+
+.teamCard:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-md);
+}
+
+.teamImgWrapper {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1.1;
+}
+
+.teamImgWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.teamCard:hover .teamImgWrapper img {
+  transform: scale(1.1);
+}
+
+.teamSocials {
+  position: absolute;
+  bottom: -50px;
+  left: 0;
+  width: 100%;
+  background: hsla(var(--primary), 0.9);
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  transition: bottom 0.3s ease;
+}
+
+.teamCard:hover .teamSocials {
+  bottom: 0;
+}
+
+.teamSocials a {
+  color: white;
+  font-size: 1.8rem;
+}
+
+.teamSocials a:hover {
+  color: hsl(var(--accent));
+  transform: translateY(-2px);
+}
+
+.teamInfo {
+  padding: 2rem;
+  text-align: center;
+}
+
+.teamInfo h3 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.teamInfo p {
+  color: hsl(var(--primary));
+  font-weight: 500;
+  margin: 0;
+}
+
+/* CTA SECTION */
+.ctaSection {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-dark)));
+  padding: 8rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaSection::after {
+  content: '\f12e'; /* FontAwesome puzzle or tooth */
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  font-size: 40rem;
+  color: rgba(255, 255, 255, 0.05);
+  top: -10rem;
+  right: -5rem;
+  transform: rotate(-15deg);
+}

@@ -1,65 +1,157 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
+import styles from "./page.module.css";
+import { useEffect } from "react";
 
 export default function Home() {
+
+  // Simple intersection observer for scroll animations
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add(styles.show);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    const hiddenElements = document.querySelectorAll(`.${styles.hidden}`);
+    hiddenElements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className={styles.main}>
+      
+      {/* HERO SECTION */}
+      <section id="home" className={styles.hero}>
+        <div className="container">
+          <div className={styles.heroContent}>
+            <h1 className={styles.heroTitle}>
+              We are best <br/> <span style={{ color: "hsl(var(--primary))" }}>Dental Services</span>
+            </h1>
+            <p className={styles.heroText}>
+              Welcome to our dental experts, where we combine advanced technology with compassionate care to deliver exceptional oral health solutions. Our team of experienced professionals is dedicated to providing personalized treatment plans and ensuring your comfort while creating the beautiful, healthy smile you deserve.
+            </p>
+            <Link href="/book-appointment" className="btn-primary" style={{ marginTop: "2rem" }}>
+              Book Appointment <i className="fas fa-arrow-right"></i>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ABOUT SECTION */}
+      <section id="about" className={`${styles.section} ${styles.aboutSection}`}>
+        <div className={`container ${styles.grid2}`}>
+          <div className={`${styles.aboutImage} ${styles.hidden}`}>
+            <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dental Clinic" />
+          </div>
+          <div className={`${styles.aboutContent} ${styles.hidden}`}>
+            <span className={styles.tag}>About Us</span>
+            <h2 className="heading" style={{ textAlign: "left", marginBottom: "1.5rem" }}>True Healthcare For Your Family</h2>
+            <p>
+              We understand that every family member has unique dental needs, which is why we provide comprehensive care tailored to patients of all ages, from children to seniors. Our modern facility is equipped with cutting-edge technology and staffed by gentle, experienced professionals who prioritize your family's comfort and well-being, ensuring a positive dental experience for everyone.
+            </p>
+            <Link href="/about" className="btn-primary" style={{ marginTop: "1rem" }}>Read More</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* SERVICES SECTION */}
+      <section id="services" className={`${styles.section} ${styles.bgMuted}`}>
+        <div className="container">
+          <h2 className="heading">Our Services</h2>
+          <div className={styles.servicesGrid}>
+            
+            <div className={styles.servicesCol}>
+              <div className={`${styles.serviceCard} ${styles.hidden}`}>
+                <div className={styles.serviceIcon}><i className="fas fa-tooth"></i></div>
+                <h3>Alignment Specialist</h3>
+                <p>Experience advanced dental alignment using state-of-the-art technology to create your perfect smile.</p>
+              </div>
+              <div className={`${styles.serviceCard} ${styles.hidden}`}>
+                <div className={styles.serviceIcon}><i className="fas fa-smile"></i></div>
+                <h3>Cosmetic Dentistry</h3>
+                <p>Transform your smile with professional whitening, veneers, and bonding that enhance both aesthetics and function.</p>
+              </div>
+              <div className={`${styles.serviceCard} ${styles.hidden}`}>
+                <div className={styles.serviceIcon}><i className="fas fa-magic"></i></div>
+                <h3>Oral Hygiene Experts</h3>
+                <p>Professional cleanings and preventive care with personalized education to maintain optimal dental health.</p>
+              </div>
+            </div>
+
+            <div className={styles.servicesCenter}>
+              <img src="https://images.unsplash.com/photo-1598256989800-fea5f67ddc7f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Services Overview" className={styles.centerImg} />
+            </div>
+
+            <div className={styles.servicesCol}>
+              <div className={`${styles.serviceCard} ${styles.hidden}`}>
+                <div className={styles.serviceIcon}><i className="fas fa-syringe"></i></div>
+                <h3>Root Canal Specialist</h3>
+                <p>Gentle endodontic techniques and modern technology to relieve pain and preserve your natural tooth.</p>
+              </div>
+              <div className={`${styles.serviceCard} ${styles.hidden}`}>
+                <div className={styles.serviceIcon}><i className="fas fa-user-md"></i></div>
+                <h3>Live Dental Advisory</h3>
+                <p>Get instant access to experienced dentists for patient guidance and personalized treatment recommendations.</p>
+              </div>
+              <div className={`${styles.serviceCard} ${styles.hidden}`}>
+                <div className={styles.serviceIcon}><i className="fas fa-search-plus"></i></div>
+                <h3>Cavity Inspection</h3>
+                <p>Advanced diagnostic tools and thorough examinations to detect cavities early and prevent dental problems.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* TEAM SECTION */}
+      <section id="teams" className={styles.section}>
+        <div className="container">
+          <h2 className="heading">Our Team</h2>
+          <div className={styles.teamGrid}>
+            {[
+              { name: "Dr. Sarah Cooper", spec: "Alignment Specialist", img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
+              { name: "Dr. John Doe", spec: "Root Canal Specialist", img: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
+              { name: "Dr. Emily Rodriguez", spec: "Cosmetic Dentistry", img: "https://images.unsplash.com/photo-1594824436998-df40959e6927?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
+              { name: "Dr. David Parker", spec: "Oral Hygiene Expert", img: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" }
+            ].map((doc, idx) => (
+              <div key={idx} className={`${styles.teamCard} ${styles.hidden}`}>
+                <div className={styles.teamImgWrapper}>
+                  <img src={doc.img} alt={doc.name} />
+                  <div className={styles.teamSocials}>
+                    <a href="#"><i className="fab fa-facebook-f"></i></a>
+                    <a href="#"><i className="fab fa-twitter"></i></a>
+                    <a href="#"><i className="fab fa-instagram"></i></a>
+                  </div>
+                </div>
+                <div className={styles.teamInfo}>
+                  <h3>{doc.name}</h3>
+                  <p>{doc.spec}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CALL TO ACTION */}
+      <section className={`${styles.section} ${styles.ctaSection}`}>
+        <div className="container" style={{ textAlign: "center" }}>
+          <h2 style={{ fontSize: "3.5rem", color: "white", marginBottom: "2rem" }}>Ready to transform your smile?</h2>
+          <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "1.8rem", maxWidth: "600px", margin: "0 auto 3rem" }}>
+            Experience our advanced, pain-free dental treatments today. Book your slot with our experts in just a few clicks.
           </p>
+          <Link href="/book-appointment" className="btn-primary" style={{ background: "white", color: "hsl(var(--primary))" }}>
+            <i className="far fa-calendar-check"></i> Book Now
+          </Link>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </section>
+      
     </div>
   );
 }
