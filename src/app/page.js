@@ -84,7 +84,7 @@ export default function Home() {
             </div>
 
             <div className={styles.servicesCenter}>
-              <img src="https://images.unsplash.com/photo-1598256989800-fea5f67ddc7f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Services Overview" className={styles.centerImg} />
+              <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Services Overview" className={styles.centerImg} />
             </div>
 
             <div className={styles.servicesCol}>
@@ -117,7 +117,7 @@ export default function Home() {
             {[
               { name: "Dr. Sarah Cooper", spec: "Alignment Specialist", img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
               { name: "Dr. John Doe", spec: "Root Canal Specialist", img: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
-              { name: "Dr. Emily Rodriguez", spec: "Cosmetic Dentistry", img: "https://images.unsplash.com/photo-1594824436998-df40959e6927?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
+              { name: "Dr. Emily Rodriguez", spec: "Cosmetic Dentistry", img: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
               { name: "Dr. David Parker", spec: "Oral Hygiene Expert", img: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" }
             ].map((doc, idx) => (
               <div key={idx} className={`${styles.teamCard} ${styles.hidden}`}>
