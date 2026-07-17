@@ -80,3 +80,13 @@ CREATE TABLE IF NOT EXISTS reports (
     advice TEXT,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS blogs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    summary TEXT NOT NULL,
+    content TEXT NOT NULL,
+    image TEXT NOT NULL,
+    author TEXT NOT NULL,
+    published_date DATETIME DEFAULT CURRENT_TIMESTAMP
+);

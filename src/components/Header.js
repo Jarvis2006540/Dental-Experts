@@ -35,12 +35,13 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className={`${styles.nav} ${isMobileMenuOpen ? styles.navOpen : ""}`}>
-            <Link href="/#home" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
-            <Link href="/#about" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
-            <Link href="/#services" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
-            <Link href="/#teams" onClick={() => setIsMobileMenuOpen(false)}>Team</Link>
-            <Link href="/#ratings" onClick={() => setIsMobileMenuOpen(false)}>Reviews</Link>
-            <Link href="/#blog" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
+            <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+            <Link href="/about" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
+            <Link href="/services" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
+            <Link href="/team" onClick={() => setIsMobileMenuOpen(false)}>Team</Link>
+            <Link href="/reviews" onClick={() => setIsMobileMenuOpen(false)}>Reviews</Link>
+            <Link href="/blog" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
+            <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
           </nav>
 
           {/* Auth Section */}
