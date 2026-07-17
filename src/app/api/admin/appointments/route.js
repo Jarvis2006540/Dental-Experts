@@ -3,12 +3,10 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/route";
 
 // Simple middleware to check if user is admin. 
-// In a real app, this should check a role flag in the user DB.
-// For demonstration, we'll assume any logged in user can access admin OR check a specific admin email.
 export async function GET(req) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) {
+        if (!session || (session.user.role !== 'admin' && session.user.role !== 'staff')) {
             return Response.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
@@ -25,7 +23,7 @@ export async function GET(req) {
 export async function PUT(req) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) {
+        if (!session || (session.user.role !== 'admin' && session.user.role !== 'staff')) {
             return Response.json({ error: 'Unauthorized' }, { status: 401 });
         }
 

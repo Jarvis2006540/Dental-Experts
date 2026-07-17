@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
     blood_type TEXT,
     gender TEXT,
     profile_pic TEXT,
+    role TEXT DEFAULT 'user',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 

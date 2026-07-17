@@ -33,12 +33,12 @@ export const authOptions = {
           const passwordsMatch = await bcrypt.compare(credentials.password, user.password);
           
           if (!passwordsMatch) return null;
-          
           return {
             id: user.id.toString(),
             name: user.name,
             email: user.email,
             image: user.profile_pic,
+            role: user.role,
           };
         } catch (error) {
           console.error("Auth error:", error);
@@ -75,9 +75,10 @@ export const authOptions = {
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id;
+        session.user.role = token.role;
         try {
             const dbUser = await db.execute({
-                sql: "SELECT id, name, email, age, blood_type, gender, profile_pic FROM users WHERE email = ?",
+                sql: "SELECT id, name, email, age, blood_type, gender, profile_pic, role FROM users WHERE email = ?",
                 args: [session.user.email]
             });
             if (dbUser.rows.length > 0) {
@@ -85,6 +86,7 @@ export const authOptions = {
                 session.user.age = dbUser.rows[0].age;
                 session.user.blood_type = dbUser.rows[0].blood_type;
                 session.user.gender = dbUser.rows[0].gender;
+                session.user.role = dbUser.rows[0].role;
                 if (!session.user.image) {
                    session.user.image = dbUser.rows[0].profile_pic;
                 }
@@ -98,6 +100,7 @@ export const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.role = user.role;
       }
       return token;
     },
