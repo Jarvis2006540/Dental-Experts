@@ -12,11 +12,16 @@ export default function AdminDashboard() {
   
   const [appointments, setAppointments] = useState([]);
   const [staff, setStaff] = useState([]);
+  const [patients, setPatients] = useState([]);
+  const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
-  const [activeTab, setActiveTab] = useState("appointments"); // "appointments" or "staff"
+  const [activeTab, setActiveTab] = useState("appointments");
   const [newStaff, setNewStaff] = useState({ name: "", email: "", password: "" });
   const [staffMessage, setStaffMessage] = useState({ type: "", text: "" });
+
+  const [newReport, setNewReport] = useState({ user_email: "", title: "", doctor_name: "", content_or_link: "" });
+  const [reportMessage, setReportMessage] = useState({ type: "", text: "" });
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -32,9 +37,11 @@ export default function AdminDashboard() {
 
   const fetchData = async () => {
     try {
-      const [apptRes, staffRes] = await Promise.all([
+      const [apptRes, staffRes, patientRes, reportRes] = await Promise.all([
         fetch("/api/admin/appointments"),
-        session?.user?.role === "admin" ? fetch("/api/admin/staff") : Promise.resolve(null)
+        session?.user?.role === "admin" ? fetch("/api/admin/staff") : Promise.resolve(null),
+        fetch("/api/admin/patients"),
+        fetch("/api/admin/reports")
       ]);
       
       if (apptRes.ok) {
@@ -45,6 +52,16 @@ export default function AdminDashboard() {
       if (staffRes && staffRes.ok) {
         const data = await staffRes.json();
         setStaff(data.staff || []);
+      }
+
+      if (patientRes && patientRes.ok) {
+        const data = await patientRes.json();
+        setPatients(data.patients || []);
+      }
+
+      if (reportRes && reportRes.ok) {
+        const data = await reportRes.json();
+        setReports(data.reports || []);
       }
     } catch (error) {
       console.error("Failed to fetch admin data", error);
@@ -96,6 +113,27 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleCreateReport = async (e) => {
+    e.preventDefault();
+    setReportMessage({ type: "", text: "" });
+    try {
+      const res = await fetch("/api/admin/reports", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newReport)
+      });
+      if (res.ok) {
+        setReportMessage({ type: "success", text: "Report assigned successfully!" });
+        setNewReport({ user_email: "", title: "", doctor_name: "", content_or_link: "" });
+        fetchData();
+      } else {
+        setReportMessage({ type: "error", text: "Failed to assign report." });
+      }
+    } catch (err) {
+      setReportMessage({ type: "error", text: "An error occurred." });
+    }
+  };
+
   if (status === "loading" || loading) {
     return <div className="container" style={{ padding: "12rem 0", textAlign: "center" }}>Loading Admin Dashboard...</div>;
   }
@@ -115,20 +153,20 @@ export default function AdminDashboard() {
           <span>Admin</span>
         </div>
         <nav className={styles.sidebarNav}>
-          <a href="#" className={activeTab === "appointments" ? styles.activeLink : ""} onClick={() => setActiveTab("appointments")}><i className="fas fa-calendar-check"></i> Appointments</a>
+          <a href="#" className={activeTab === "appointments" ? styles.activeLink : ""} onClick={(e) => {e.preventDefault(); setActiveTab("appointments");}}><i className="fas fa-calendar-check"></i> Appointments</a>
           {session.user.role === "admin" && (
-            <a href="#" className={activeTab === "staff" ? styles.activeLink : ""} onClick={() => setActiveTab("staff")}><i className="fas fa-user-md"></i> Manage Staff</a>
+            <a href="#" className={activeTab === "staff" ? styles.activeLink : ""} onClick={(e) => {e.preventDefault(); setActiveTab("staff");}}><i className="fas fa-user-md"></i> Manage Staff</a>
           )}
-          <a href="#"><i className="fas fa-users"></i> Patients</a>
-          <a href="#"><i className="fas fa-file-medical"></i> Reports</a>
+          <a href="#" className={activeTab === "patients" ? styles.activeLink : ""} onClick={(e) => {e.preventDefault(); setActiveTab("patients");}}><i className="fas fa-users"></i> Patients</a>
+          <a href="#" className={activeTab === "reports" ? styles.activeLink : ""} onClick={(e) => {e.preventDefault(); setActiveTab("reports");}}><i className="fas fa-file-medical"></i> Reports</a>
           <a href="#"><i className="fas fa-cog"></i> Settings</a>
         </nav>
       </div>
 
       <div className={styles.mainContent}>
         <header className={styles.header}>
-          <h1 className="heading" style={{ margin: 0, textAlign: "left", fontSize: "2.4rem" }}>
-            {activeTab === "appointments" ? "Manage Appointments" : "Manage Staff"}
+          <h1 className="heading" style={{ margin: 0, textAlign: "left", fontSize: "2.4rem", textTransform: "capitalize" }}>
+            Manage {activeTab}
           </h1>
           <div className={styles.headerProfile}>
             <span>{session.user.role === "admin" ? "Admin" : "Staff"}, {session.user.name}</span>
@@ -247,7 +285,7 @@ export default function AdminDashboard() {
               </table>
             </div>
           </>
-        ) : (
+        ) : activeTab === "staff" && session.user.role === "admin" ? (
           <div className={styles.tableContainer}>
             <div className={styles.tableHeader}>
               <h2>Add New Staff Member</h2>
@@ -305,7 +343,90 @@ export default function AdminDashboard() {
               </table>
             </div>
           </div>
-        )}
+        ) : activeTab === "patients" ? (
+          <div className={styles.tableContainer}>
+            <div className={styles.tableHeader}>
+              <h2>Registered Patients</h2>
+            </div>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                </tr>
+              </thead>
+              <tbody>
+                {patients.length > 0 ? patients.map(p => (
+                  <tr key={p.id}>
+                    <td><strong>{p.name}</strong></td>
+                    <td>{p.email}</td>
+                    <td>{p.phone || "N/A"}</td>
+                  </tr>
+                )) : (
+                  <tr><td colSpan="3" style={{ textAlign: "center", padding: "2rem" }}>No patients found.</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        ) : activeTab === "reports" ? (
+          <div className={styles.tableContainer}>
+            <div className={styles.tableHeader}>
+              <h2>Upload Medical Report</h2>
+            </div>
+            <div style={{ padding: "2rem" }}>
+              {reportMessage.text && (
+                <div style={{ 
+                  padding: "1rem", 
+                  marginBottom: "2rem", 
+                  borderRadius: "6px", 
+                  background: reportMessage.type === "success" ? "#dcfce7" : "#fee2e2",
+                  color: reportMessage.type === "success" ? "#166534" : "#991b1b"
+                }}>
+                  {reportMessage.text}
+                </div>
+              )}
+              
+              <form onSubmit={handleCreateReport} style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "flex-end", marginBottom: "3rem" }}>
+                <div style={{ flex: "1 1 200px" }}>
+                  <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "bold" }}>Patient Email</label>
+                  <input type="email" value={newReport.user_email} onChange={e => setNewReport({...newReport, user_email: e.target.value})} required style={{ width: "100%", padding: "1rem", border: "1px solid #ccc", borderRadius: "6px" }} placeholder="patient@example.com" />
+                </div>
+                <div style={{ flex: "1 1 200px" }}>
+                  <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "bold" }}>Report Title</label>
+                  <input type="text" value={newReport.title} onChange={e => setNewReport({...newReport, title: e.target.value})} required style={{ width: "100%", padding: "1rem", border: "1px solid #ccc", borderRadius: "6px" }} placeholder="X-Ray Results" />
+                </div>
+                <div style={{ flex: "1 1 300px" }}>
+                  <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "bold" }}>Content or File Link</label>
+                  <input type="text" value={newReport.content_or_link} onChange={e => setNewReport({...newReport, content_or_link: e.target.value})} required style={{ width: "100%", padding: "1rem", border: "1px solid #ccc", borderRadius: "6px" }} placeholder="Diagnosis details or https://..." />
+                </div>
+                <button type="submit" className="btn-primary" style={{ padding: "1rem 2rem", height: "46px" }}>Assign Report</button>
+              </form>
+
+              <h3>Recent Reports</h3>
+              <table className={styles.table} style={{ marginTop: "1rem" }}>
+                <thead>
+                  <tr>
+                    <th>Patient Email</th>
+                    <th>Title</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reports.length > 0 ? reports.map(r => (
+                    <tr key={r.id}>
+                      <td><strong>{r.user_email}</strong></td>
+                      <td>{r.title}</td>
+                      <td>{new Date(r.report_date).toLocaleDateString()}</td>
+                    </tr>
+                  )) : (
+                    <tr><td colSpan="3" style={{ textAlign: "center", padding: "2rem" }}>No reports found.</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );

@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import styles from "./page.module.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Modal from "../components/Modal";
 
 export default function Home() {
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
 
   // Simple intersection observer for scroll animations
   useEffect(() => {
@@ -54,10 +56,25 @@ export default function Home() {
             <p>
               We understand that every family member has unique dental needs, which is why we provide comprehensive care tailored to patients of all ages, from children to seniors. Our modern facility is equipped with cutting-edge technology and staffed by gentle, experienced professionals who prioritize your family's comfort and well-being, ensuring a positive dental experience for everyone.
             </p>
-            <Link href="/about" className="btn-primary" style={{ marginTop: "1rem" }}>Read More</Link>
+            <button onClick={() => setIsAboutModalOpen(true)} className="btn-primary" style={{ marginTop: "1rem" }}>Read More</button>
           </div>
         </div>
       </section>
+
+      <Modal isOpen={isAboutModalOpen} onClose={() => setIsAboutModalOpen(false)} title="About Dental Experts">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Clinic" style={{ width: '100%', borderRadius: '10px', height: '300px', objectFit: 'cover' }} />
+          <p>
+            We understand that every family member has unique dental needs, which is why we provide comprehensive care tailored to patients of all ages, from children to seniors. Our modern facility is equipped with cutting-edge technology and staffed by gentle, experienced professionals who prioritize your family's comfort and well-being, ensuring a positive dental experience for everyone.
+          </p>
+          <p>
+            Founded in 1995, Dental Experts has grown from a single-chair practice to a multi-specialty clinic serving thousands of patients annually. Our commitment to continuing education means our team is always at the forefront of dental advancements.
+          </p>
+          <p>
+            Whether you need a routine cleaning, complex restorative work, or a complete cosmetic makeover, we take the time to listen to your concerns and design a treatment plan that fits your lifestyle and budget.
+          </p>
+        </div>
+      </Modal>
 
       {/* SERVICES SECTION */}
       <section id="services" className={`${styles.section} ${styles.bgMuted}`}>

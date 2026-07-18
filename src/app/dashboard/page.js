@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./dashboard.module.css";
+import Modal from "../../components/Modal";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -13,6 +14,11 @@ export default function Dashboard() {
   const [appointments, setAppointments] = useState([]);
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Modal States
+  const [activeReport, setActiveReport] = useState(null);
+  const [reviewDoctor, setReviewDoctor] = useState(null);
+  const [reviewData, setReviewData] = useState({ rating: 5, comment: "" });
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -71,6 +77,26 @@ export default function Dashboard() {
     } catch (err) {
         console.error(err);
         alert("An error occurred while cancelling.");
+    }
+  };
+
+  const submitReview = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/ratings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ doctor_name: reviewDoctor, ...reviewData })
+      });
+      if (res.ok) {
+        alert("Review submitted successfully!");
+        setReviewDoctor(null);
+        setReviewData({ rating: 5, comment: "" });
+      } else {
+        alert("Failed to submit review");
+      }
+    } catch (err) {
+      alert("Error submitting review");
     }
   };
 
@@ -147,6 +173,17 @@ export default function Dashboard() {
                              Cancel
                            </button>
                         )}
+                        {appt.status === 'Completed' && (
+                           <button 
+                             onClick={() => setReviewDoctor(appt.doctor)}
+                             style={{
+                               background: 'none', border: 'none', color: 'hsl(var(--primary))',
+                               cursor: 'pointer', fontSize: '0.9rem', textDecoration: 'underline'
+                             }}
+                           >
+                             Leave Review
+                           </button>
+                        )}
                       </div>
                     </div>
                   ))
@@ -172,7 +209,7 @@ export default function Dashboard() {
                         <h4>{report.title}</h4>
                         <p>Dr. {report.doctor_name} - {new Date(report.report_date).toLocaleDateString()}</p>
                       </div>
-                      <button className={styles.viewBtn}>View</button>
+                      <button className={styles.viewBtn} onClick={() => setActiveReport(report)}>View</button>
                     </div>
                   ))
                 ) : (
@@ -183,6 +220,39 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      <Modal isOpen={!!activeReport} onClose={() => setActiveReport(null)} title={activeReport?.title || "Medical Report"}>
+        {activeReport && (
+          <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+            <div style={{ fontSize: "1.4rem", color: "hsl(var(--primary))", display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", paddingBottom: "1rem" }}>
+              <span><strong>Doctor:</strong> Dr. {activeReport.doctor_name}</span>
+              <span><strong>Date:</strong> {new Date(activeReport.report_date).toLocaleDateString()}</span>
+            </div>
+            <div style={{ fontSize: "1.6rem", lineHeight: "1.8", color: "hsl(var(--text-main))", whiteSpace: "pre-wrap" }}>
+              {activeReport.content_or_link.startsWith("http") ? (
+                <a href={activeReport.content_or_link} target="_blank" rel="noopener noreferrer" style={{ color: "hsl(var(--primary))", textDecoration: "underline" }}>Download / View Report File</a>
+              ) : (
+                activeReport.content_or_link
+              )}
+            </div>
+          </div>
+        )}
+      </Modal>
+
+      <Modal isOpen={!!reviewDoctor} onClose={() => setReviewDoctor(null)} title={`Review Dr. ${reviewDoctor}`}>
+        <form onSubmit={submitReview} style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+          <div>
+            <label style={{ display: "block", marginBottom: "1rem", fontSize: "1.4rem", fontWeight: "bold" }}>Rating (1-5)</label>
+            <input type="number" min="1" max="5" value={reviewData.rating} onChange={(e) => setReviewData({...reviewData, rating: parseInt(e.target.value)})} required style={{ width: "100%", padding: "1rem", border: "1px solid #ddd", borderRadius: "6px", fontSize: "1.6rem" }} />
+          </div>
+          <div>
+            <label style={{ display: "block", marginBottom: "1rem", fontSize: "1.4rem", fontWeight: "bold" }}>Comment</label>
+            <textarea value={reviewData.comment} onChange={(e) => setReviewData({...reviewData, comment: e.target.value})} style={{ width: "100%", padding: "1rem", border: "1px solid #ddd", borderRadius: "6px", fontSize: "1.6rem", minHeight: "100px", resize: "vertical" }} placeholder="Share your experience..."></textarea>
+          </div>
+          <button type="submit" className="btn-primary" style={{ width: "100%", padding: "1.2rem", fontSize: "1.6rem" }}>Submit Review</button>
+        </form>
+      </Modal>
+
     </div>
   );
 }
