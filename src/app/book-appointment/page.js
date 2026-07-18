@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import styles from "./book.module.css";
@@ -17,18 +17,66 @@ export default function BookAppointment() {
     time: "",
     phone: ""
   });
+  
+  const [doctors, setDoctors] = useState([]);
+  const [availableSlots, setAvailableSlots] = useState([]);
+  const [loadingDoctors, setLoadingDoctors] = useState(true);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const doctors = [
-    { id: "Sarah Cooper", name: "Dr. Sarah Cooper", spec: "Alignment Specialist" },
-    { id: "John Doe", name: "Dr. John Doe", spec: "Root Canal Specialist" },
-    { id: "Emily Rodriguez", name: "Dr. Emily Rodriguez", spec: "Cosmetic Dentistry" },
-    { id: "David Parker", name: "Dr. David Parker", spec: "Oral Hygiene Expert" }
-  ];
+  const allTimeSlots = ["09:00 AM", "10:00 AM", "11:30 AM", "01:00 PM", "03:00 PM", "04:30 PM"];
 
-  const timeSlots = ["09:00 AM", "10:00 AM", "11:30 AM", "01:00 PM", "03:00 PM", "04:30 PM"];
+  // Fetch doctors on mount
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const res = await fetch("/api/doctors");
+        if (res.ok) {
+          const data = await res.json();
+          setDoctors(data.doctors || []);
+        }
+      } catch (err) {
+        console.error("Failed to fetch doctors:", err);
+      } finally {
+        setLoadingDoctors(false);
+      }
+    };
+    fetchDoctors();
+  }, []);
+
+  // Fetch booked slots when doctor or date changes
+  useEffect(() => {
+    const fetchAvailability = async () => {
+      if (formData.doctor && formData.appointment_date) {
+        setLoadingSlots(true);
+        try {
+          const res = await fetch(`/api/appointments/availability?doctor=${encodeURIComponent(formData.doctor)}&date=${formData.appointment_date}`);
+          if (res.ok) {
+            const data = await res.json();
+            const booked = data.bookedSlots || [];
+            const available = allTimeSlots.filter(slot => !booked.includes(slot));
+            setAvailableSlots(available);
+            
+            // If currently selected time is now booked, clear it
+            if (formData.time && booked.includes(formData.time)) {
+                setFormData(prev => ({...prev, time: ""}));
+            }
+          }
+        } catch (err) {
+          console.error("Failed to fetch availability:", err);
+        } finally {
+          setLoadingSlots(false);
+        }
+      } else {
+        setAvailableSlots(allTimeSlots);
+      }
+    };
+
+    fetchAvailability();
+  }, [formData.doctor, formData.appointment_date]);
 
   if (status === "loading") {
     return <div className="container" style={{ padding: "12rem 0", textAlign: "center" }}>Loading...</div>;
@@ -53,7 +101,6 @@ export default function BookAppointment() {
     setLoading(true);
     setError("");
     try {
-      // Combine date and time
       const dateTimeString = `${formData.appointment_date} ${formData.time}`;
       
       const res = await fetch("/api/appointments", {
@@ -97,24 +144,34 @@ export default function BookAppointment() {
               <div className={`${styles.step} ${step >= 3 ? styles.activeStep : ""}`}>3. Confirm</div>
             </div>
 
-            {error && <div className={styles.errorAlert}>{error}</div>}
+            {error && <div className={styles.errorAlert}><i className="fas fa-exclamation-circle"></i> {error}</div>}
 
             {step === 1 && (
               <div className={styles.stepContent}>
                 <h2 className={styles.stepTitle}>Select a Specialist</h2>
-                <div className={styles.doctorGrid}>
-                  {doctors.map(doc => (
-                    <div 
-                      key={doc.id} 
-                      className={`${styles.doctorCard} ${formData.doctor === doc.name ? styles.selectedCard : ""}`}
-                      onClick={() => setFormData({...formData, doctor: doc.name})}
-                    >
-                      <i className="fas fa-user-md" style={{ fontSize: "3rem", color: "hsl(var(--primary))", marginBottom: "1rem" }}></i>
-                      <h3>{doc.name}</h3>
-                      <p>{doc.spec}</p>
-                    </div>
-                  ))}
-                </div>
+                {loadingDoctors ? (
+                   <div style={{textAlign: 'center', padding: '2rem'}}>Loading doctors...</div>
+                ) : (
+                   <div className={styles.doctorGrid}>
+                     {doctors.map(doc => (
+                       <div 
+                         key={doc.id} 
+                         className={`${styles.doctorCard} ${formData.doctor === doc.name ? styles.selectedCard : ""}`}
+                         onClick={() => setFormData({...formData, doctor: doc.name})}
+                       >
+                         {doc.image ? (
+                             <img src={doc.image} alt={doc.name} style={{width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', marginBottom: '1rem'}} />
+                         ) : (
+                             <i className="fas fa-user-md" style={{ fontSize: "3rem", color: "hsl(var(--primary))", marginBottom: "1rem" }}></i>
+                         )}
+                         
+                         <h3>{doc.name}</h3>
+                         <p>{doc.specialization}</p>
+                       </div>
+                     ))}
+                   </div>
+                )}
+                
                 <div className={styles.actionRow}>
                   <div></div>
                   <button className="btn-primary" disabled={!formData.doctor} onClick={handleNext}>Next Step</button>
@@ -138,18 +195,24 @@ export default function BookAppointment() {
 
                 {formData.appointment_date && (
                   <div className={styles.formGroup}>
-                    <label>Available Time Slots</label>
-                    <div className={styles.timeGrid}>
-                      {timeSlots.map(time => (
-                        <div 
-                          key={time} 
-                          className={`${styles.timeSlot} ${formData.time === time ? styles.selectedTime : ""}`}
-                          onClick={() => setFormData({...formData, time})}
-                        >
-                          {time}
+                    <label>Available Time Slots for {formData.doctor}</label>
+                    {loadingSlots ? (
+                         <div style={{padding: '1rem 0'}}>Checking availability...</div>
+                    ) : availableSlots.length === 0 ? (
+                         <div style={{color: 'hsl(var(--destructive))', padding: '1rem 0'}}>No slots available for this date. Please select another date.</div>
+                    ) : (
+                        <div className={styles.timeGrid}>
+                          {availableSlots.map(time => (
+                            <div 
+                              key={time} 
+                              className={`${styles.timeSlot} ${formData.time === time ? styles.selectedTime : ""}`}
+                              onClick={() => setFormData({...formData, time})}
+                            >
+                              {time}
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                    )}
                   </div>
                 )}
                 

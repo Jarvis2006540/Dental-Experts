@@ -20,9 +20,11 @@
 .card {
   background: hsl(var(--bg-card));
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  padding: 3rem;
-  border: 1px solid hsl(var(--border-light));
+  box-shadow: var(--shadow-md);
+  padding: 3.5rem;
+  border: 1px solid hsla(var(--border-light), 0.6);
+  position: relative;
+  overflow: hidden;
 }
 
 .profileHeader {
@@ -122,15 +124,18 @@
   display: flex;
   align-items: center;
   padding: 1.5rem;
-  border: 1px solid hsl(var(--border-light));
+  border: 1px solid hsla(var(--border-light), 0.6);
   border-radius: var(--radius-md);
   margin-bottom: 1.5rem;
-  transition: var(--transition-fast);
+  transition: all var(--transition-smooth);
+  background: hsl(var(--bg-card));
 }
 
 .listItem:hover {
   border-color: hsl(var(--primary-light));
-  background: hsla(var(--bg-muted), 0.5);
+  background: hsla(var(--bg-muted), 0.3);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
 }
 
 .itemIcon {

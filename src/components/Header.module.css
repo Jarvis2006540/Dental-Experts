@@ -10,12 +10,12 @@
 }
 
 .scrolled {
-  background-color: hsla(var(--bg-main), 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: hsla(var(--bg-main), 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   box-shadow: var(--shadow-sm);
-  padding: 1rem 0;
-  border-bottom: 1px solid hsla(var(--border-light), 0.5);
+  padding: 1.2rem 0;
+  border-bottom: 1px solid hsla(var(--border-light), 0.7);
 }
 
 .container {
@@ -49,17 +49,19 @@
   font-weight: 500;
   color: hsl(var(--text-main));
   position: relative;
+  padding-bottom: 4px;
 }
 
 .nav a::after {
   content: '';
   position: absolute;
-  bottom: -4px;
+  bottom: 0;
   left: 0;
   width: 0;
   height: 2px;
-  background-color: hsl(var(--primary));
-  transition: width var(--transition-fast);
+  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)));
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
 }
 
 .nav a:hover::after {
@@ -118,20 +120,22 @@
 
 .dropdownMenu {
   position: absolute;
-  top: 110%;
+  top: 120%;
   right: 0;
-  background-color: hsl(var(--bg-card));
+  background-color: hsla(var(--bg-card), 0.95);
+  backdrop-filter: blur(10px);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
   padding: 1rem 0;
-  min-width: 180px;
-  border: 1px solid hsl(var(--border-light));
-  animation: slideDown 0.2s ease-out forwards;
+  min-width: 200px;
+  border: 1px solid hsla(var(--border-light), 0.5);
+  animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  overflow: hidden;
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(-15px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .dropdownItem {

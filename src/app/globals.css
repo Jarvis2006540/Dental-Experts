@@ -1,53 +1,55 @@
 /* 
   Dental Experts Premium Design System 
-  Using modern HSL colors, smooth gradients, and clean styling
+  Using luxurious Sapphire & Aqua colors with soft glassmorphism
 */
 
 :root {
-  /* Color Palette */
-  --primary: 180, 100%, 36%;       /* #00b8b8 Deep Teal/Cyan */
-  --primary-light: 180, 100%, 45%; 
-  --primary-dark: 180, 100%, 25%;
-  --secondary: 210, 29%, 24%;      /* Slate Blue/Gray */
-  --accent: 38, 92%, 50%;          /* Warm Gold/Orange for contrast */
+  /* Premium Color Palette */
+  --primary: 222, 47%, 21%;       /* Deep Sapphire Blue */
+  --primary-light: 222, 80%, 40%; /* Brighter Royal Blue */
+  --primary-dark: 222, 50%, 15%;  /* Very Dark Blue */
+  --secondary: 215, 25%, 27%;     /* Slate Gray/Blue */
+  --accent: 175, 70%, 41%;        /* Soft Emerald/Aqua */
 
   /* Neutrals */
-  --bg-main: 0, 0%, 100%;
-  --bg-muted: 180, 100%, 98%;      /* Very light cyan for alternate sections */
-  --bg-card: 0, 0%, 100%;
-  --text-main: 210, 29%, 24%;
+  --bg-main: 210, 40%, 98%;       /* Almost white with blue tint */
+  --bg-muted: 214, 32%, 95%;      /* Light grayish blue */
+  --bg-card: 0, 0%, 100%;         /* Pure white */
+  --text-main: 222, 47%, 15%;     /* Darker navy for text */
   --text-muted: 215, 16%, 47%;
   --border-light: 214, 32%, 91%;
 
   /* Spacing & Layout */
   --radius-sm: 0.5rem;
-  --radius-md: 1rem;
-  --radius-lg: 1.5rem;
+  --radius-md: 1.2rem;
+  --radius-lg: 2rem;
   --radius-pill: 9999px;
   
-  --container-max: 1200px;
+  --container-max: 1280px;
   
-  /* Shadows */
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-  --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.025);
-  --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.02);
-  --shadow-glow: 0 0 15px hsla(var(--primary), 0.3);
+  /* Shadows - Diffused and Soft */
+  --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+  --shadow-md: 0 12px 20px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.04);
+  --shadow-lg: 0 25px 35px -5px rgba(0,0,0,0.1), 0 10px 15px -5px rgba(0,0,0,0.05);
+  --shadow-glow: 0 0 20px hsla(var(--accent), 0.4);
+  --shadow-inner: inset 0 2px 4px 0 rgba(255, 255, 255, 0.3);
 
   /* Transitions */
-  --transition-fast: 0.2s ease;
-  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-main: 210, 29%, 10%;
-    --bg-muted: 210, 29%, 14%;
-    --bg-card: 210, 29%, 16%;
-    --text-main: 0, 0%, 98%;
-    --text-muted: 215, 20%, 65%;
-    --border-light: 210, 29%, 20%;
-    --shadow-sm: 0 2px 4px rgba(0,0,0,0.2);
-    --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.3);
+    --bg-main: 222, 47%, 7%;
+    --bg-muted: 222, 47%, 10%;
+    --bg-card: 222, 47%, 12%;
+    --text-main: 210, 40%, 98%;
+    --text-muted: 215, 20%, 75%;
+    --border-light: 222, 30%, 20%;
+    --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.3);
+    --shadow-md: 0 12px 20px -3px rgba(0,0,0,0.4);
+    --shadow-inner: inset 0 2px 4px 0 rgba(255, 255, 255, 0.05);
   }
 }
 
@@ -59,24 +61,26 @@
 
 html {
   scroll-behavior: smooth;
-  font-size: 62.5%; /* 1rem = 10px for easier math, typical in some modern setups */
+  font-size: 62.5%;
 }
 
 body {
   background-color: hsl(var(--bg-main));
   color: hsl(var(--text-main));
-  font-size: 1.6rem; /* 16px base */
-  line-height: 1.6;
+  font-size: 1.6rem;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-outfit), sans-serif;
 }
 
 /* Typography elements */
 h1, h2, h3, h4, h5, h6 {
-  line-height: 1.2;
-  margin-bottom: 1rem;
-  font-weight: 600;
+  line-height: 1.25;
+  margin-bottom: 1.2rem;
+  font-weight: 700;
   color: hsl(var(--text-main));
+  letter-spacing: -0.02em;
 }
 
 p {
@@ -91,7 +95,7 @@ a {
 }
 
 a:hover {
-  color: hsl(var(--primary));
+  color: hsl(var(--accent));
 }
 
 img {
@@ -104,47 +108,71 @@ img {
 .container {
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 2.5rem;
 }
 
 .heading {
   text-align: center;
-  font-size: 3.5rem;
-  color: hsl(var(--text-main));
-  margin-bottom: 3rem;
+  font-size: 4rem;
+  color: hsl(var(--primary));
+  margin-bottom: 4rem;
   text-transform: capitalize;
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
-/* Base Button Style */
+/* Premium Button Style */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, hsl(var(--primary-light)), hsl(var(--primary)));
-  color: white;
-  padding: 1.2rem 3rem;
+  color: white !important;
+  padding: 1.4rem 3.2rem;
   border-radius: var(--radius-pill);
   font-size: 1.5rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   border: none;
-  transition: var(--transition-smooth);
-  box-shadow: var(--shadow-sm);
-  gap: 0.8rem;
+  transition: all var(--transition-smooth);
+  box-shadow: var(--shadow-md), var(--shadow-inner);
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.02em;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-25deg);
+  transition: all 0.7s ease;
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md), var(--shadow-glow);
-  color: white;
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-dark)));
+}
+
+.btn-primary:hover::after {
+  left: 200%;
+}
+
+.btn-primary:active {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Glassmorphism utility */
 .glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: hsla(var(--bg-card), 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid hsla(var(--border-light), 0.5);
+  box-shadow: var(--shadow-md);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -153,3 +181,4 @@ img {
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 }
+

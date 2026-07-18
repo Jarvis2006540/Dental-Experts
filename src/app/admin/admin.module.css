@@ -91,11 +91,18 @@
   background: hsl(var(--bg-card));
   padding: 2.5rem;
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid hsl(var(--border-light));
+  box-shadow: var(--shadow-md);
+  border: 1px solid hsla(var(--border-light), 0.6);
   display: flex;
   align-items: center;
   gap: 2rem;
+  transition: all var(--transition-smooth);
+}
+
+.statCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: hsl(var(--primary-light));
 }
 
 .statIcon {
@@ -127,8 +134,8 @@
 .tableContainer {
   background: hsl(var(--bg-card));
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid hsl(var(--border-light));
+  box-shadow: var(--shadow-md);
+  border: 1px solid hsla(var(--border-light), 0.6);
   overflow: hidden;
 }
 
@@ -179,8 +186,12 @@
   border-bottom: none;
 }
 
+.table tbody tr {
+  transition: all var(--transition-fast);
+}
+
 .table tbody tr:hover {
-  background: hsla(var(--bg-muted), 0.3);
+  background: hsla(var(--bg-muted), 0.6);
 }
 
 .patientInfo {

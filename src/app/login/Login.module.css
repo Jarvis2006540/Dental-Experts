@@ -1,10 +1,10 @@
 .authContainer {
-  min-height: 100vh;
+  min-height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  background: linear-gradient(135deg, hsla(var(--primary-light), 0.1) 0%, hsla(var(--bg-muted), 1) 100%);
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, hsla(var(--bg-muted), 1), white);
 }
 
 .authBox {
@@ -14,16 +14,29 @@
   box-shadow: var(--shadow-lg);
   width: 100%;
   max-width: 450px;
-  text-align: center;
+  border: 1px solid hsla(var(--border-light), 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.authBox::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, hsl(var(--primary-light)), hsl(var(--accent)));
 }
 
 .title {
+  text-align: center;
   font-size: 2.8rem;
-  color: hsl(var(--text-main));
   margin-bottom: 0.5rem;
+  color: hsl(var(--primary-dark));
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .subtitle {
+  text-align: center;
   font-size: 1.4rem;
   color: hsl(var(--text-muted));
   margin-bottom: 3rem;
@@ -46,32 +59,35 @@
   left: 1.5rem;
   color: hsl(var(--text-muted));
   font-size: 1.4rem;
+  z-index: 10;
 }
 
-.inputGroup input {
+.inputGroup input,
+.inputGroup textarea {
   width: 100%;
-  padding: 1.2rem 1.2rem 1.2rem 4rem;
-  border: 1px solid hsl(var(--border-light));
-  border-radius: var(--radius-md);
+  padding: 1.4rem 1.4rem 1.4rem 4rem;
+  border: 1px solid hsla(var(--border-light), 0.8);
+  border-radius: var(--radius-sm);
   font-size: 1.5rem;
-  background: hsl(var(--bg-main));
+  transition: all var(--transition-fast);
+  background: hsla(var(--bg-muted), 0.5);
   color: hsl(var(--text-main));
-  transition: var(--transition-fast);
 }
 
-.inputGroup input:focus {
+.inputGroup input:focus,
+.inputGroup textarea:focus {
   outline: none;
-  border-color: hsl(var(--primary));
-  box-shadow: 0 0 0 3px hsla(var(--primary), 0.1);
+  border-color: hsl(var(--primary-light));
+  box-shadow: 0 0 0 4px hsla(var(--primary), 0.1);
+  background: hsl(var(--bg-card));
 }
 
 .divider {
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 2.5rem 0;
+  margin: 2rem 0;
   color: hsl(var(--text-muted));
-  font-size: 1.2rem;
 }
 
 .divider::before,
@@ -83,6 +99,8 @@
 
 .divider span {
   padding: 0 1rem;
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 
 .googleBtn {
@@ -99,12 +117,12 @@
   font-weight: 500;
   color: hsl(var(--text-main));
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 
 .googleBtn:hover {
-  background: hsl(var(--bg-muted));
-  border-color: hsl(var(--text-muted));
+  background: hsl(var(--bg-muted)) !important;
+  transform: translateY(-2px);
 }
 
 .footerText {

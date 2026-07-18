@@ -68,6 +68,11 @@ export default function Header() {
                     <Link href="/dashboard" className={styles.dropdownItem} onClick={() => setIsDropdownOpen(false)}>
                       <i className="fas fa-user-circle"></i> Dashboard
                     </Link>
+                    {(session.user.role === 'admin' || session.user.role === 'staff') && (
+                      <Link href="/admin" className={styles.dropdownItem} onClick={() => setIsDropdownOpen(false)}>
+                        <i className="fas fa-cog"></i> Admin Panel
+                      </Link>
+                    )}
                     <button onClick={() => signOut()} className={styles.dropdownItem}>
                       <i className="fas fa-sign-out-alt"></i> Logout
                     </button>

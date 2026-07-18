@@ -22,13 +22,12 @@
   transform: translateY(0);
 }
 
-/* HERO SECTION */
 .hero {
   position: relative;
   min-height: 100vh;
   display: flex;
   align-items: center;
-  background: linear-gradient(to right, hsla(var(--bg-main), 0.9) 0%, hsla(var(--bg-main), 0.4) 100%), url('https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  background: linear-gradient(to right, hsla(var(--bg-main), 0.95) 0%, hsla(var(--bg-main), 0.5) 100%), url('https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
   padding-top: 8rem;
 }
 
@@ -37,11 +36,15 @@
 }
 
 .heroTitle {
-  font-size: clamp(4rem, 6vw, 6rem);
-  font-weight: 700;
+  font-size: clamp(4rem, 6.5vw, 7rem);
+  font-weight: 800;
   line-height: 1.1;
   margin-bottom: 2rem;
-  color: hsl(var(--text-main));
+  background: linear-gradient(135deg, hsl(var(--primary-light)), hsl(var(--primary-dark)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.03em;
 }
 
 .heroText {
@@ -120,38 +123,55 @@
 
 .serviceCard {
   background: hsl(var(--bg-card));
-  padding: 3rem 2rem;
-  border-radius: var(--radius-md);
+  padding: 4rem 3rem;
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   text-align: center;
-  transition: var(--transition-smooth);
-  border-bottom: 3px solid transparent;
+  transition: all var(--transition-smooth);
+  border: 1px solid hsla(var(--border-light), 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.serviceCard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, hsl(var(--primary-light)), hsl(var(--accent)));
+  opacity: 0;
+  transition: opacity var(--transition-smooth);
 }
 
 .serviceCard:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
-  border-color: hsl(var(--primary));
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  border-color: transparent;
+}
+
+.serviceCard:hover::before {
+  opacity: 1;
 }
 
 .serviceIcon {
-  width: 70px;
-  height: 70px;
-  margin: 0 auto 2rem;
-  background: hsla(var(--primary), 0.1);
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 2.5rem;
+  background: linear-gradient(135deg, hsla(var(--primary), 0.1), hsla(var(--accent), 0.1));
   color: hsl(var(--primary));
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
-  transition: var(--transition-smooth);
+  font-size: 3rem;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 0 0 2px hsla(var(--primary), 0.2);
 }
 
 .serviceCard:hover .serviceIcon {
-  background: hsl(var(--primary));
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
   color: white;
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) scale(1.1);
+  box-shadow: var(--shadow-glow);
 }
 
 .serviceCard h3 {
@@ -215,29 +235,33 @@
 
 .teamSocials {
   position: absolute;
-  bottom: -50px;
-  left: 0;
-  width: 100%;
-  background: hsla(var(--primary), 0.9);
+  bottom: -60px;
+  left: 10px;
+  right: 10px;
+  background: hsla(var(--bg-card), 0.85);
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
-  padding: 1.5rem 0;
-  transition: bottom 0.3s ease;
+  gap: 2rem;
+  padding: 1.2rem 0;
+  border-radius: var(--radius-md);
+  transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-md);
 }
 
 .teamCard:hover .teamSocials {
-  bottom: 0;
+  bottom: 15px;
 }
 
 .teamSocials a {
-  color: white;
-  font-size: 1.8rem;
+  color: hsl(var(--primary));
+  font-size: 2rem;
+  transition: all var(--transition-fast);
 }
 
 .teamSocials a:hover {
   color: hsl(var(--accent));
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.1);
 }
 
 .teamInfo {

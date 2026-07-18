@@ -49,6 +49,31 @@ export default function Dashboard() {
     }
   };
 
+  const handleCancelAppointment = async (id) => {
+    if (!confirm("Are you sure you want to cancel this appointment?")) return;
+
+    try {
+        const res = await fetch("/api/appointments", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, status: "Cancelled" })
+        });
+
+        if (res.ok) {
+            // Update local state
+            setAppointments(appointments.map(appt => 
+                appt.id === id ? { ...appt, status: "Cancelled" } : appt
+            ));
+        } else {
+            const data = await res.json();
+            alert(data.error || "Failed to cancel appointment");
+        }
+    } catch (err) {
+        console.error(err);
+        alert("An error occurred while cancelling.");
+    }
+  };
+
   if (status === "loading" || loading) {
     return <div className="container" style={{ padding: "12rem 0", textAlign: "center" }}>Loading Dashboard...</div>;
   }
@@ -105,12 +130,23 @@ export default function Dashboard() {
                       <div className={styles.itemIcon}><i className="fas fa-calendar-alt"></i></div>
                       <div className={styles.itemDetails}>
                         <h4>{appt.doctor}</h4>
-                        <p>{new Date(appt.appointment_date).toLocaleString()}</p>
+                        <p>{appt.appointment_date}</p>
                       </div>
-                      <div className={styles.itemStatus}>
+                      <div className={styles.itemStatus} style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
                         <span className={`${styles.statusBadge} ${styles[appt.status.toLowerCase()] || styles.scheduled}`}>
                           {appt.status}
                         </span>
+                        {appt.status === 'Scheduled' && (
+                           <button 
+                             onClick={() => handleCancelAppointment(appt.id)}
+                             style={{
+                               background: 'none', border: 'none', color: 'hsl(var(--destructive))',
+                               cursor: 'pointer', fontSize: '0.9rem', textDecoration: 'underline'
+                             }}
+                           >
+                             Cancel
+                           </button>
+                        )}
                       </div>
                     </div>
                   ))

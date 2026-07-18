@@ -8,20 +8,30 @@ export default function Reviews() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // In a real app, this would fetch from /api/ratings
-    // Using static dummy data for demonstration
-    const dummyReviews = [
-      { id: 1, user_name: "John Smith", doctor_name: "Dr. Sarah Cooper", rating: 5, review_text: "Excellent service! Highly recommend Dr. Cooper for anyone needing alignment." },
-      { id: 2, user_name: "Alice Johnson", doctor_name: "Dr. Emily Rodriguez", rating: 5, review_text: "Very professional and painless cosmetic procedure." },
-      { id: 3, user_name: "Michael Brown", doctor_name: "Dr. John Doe", rating: 4, review_text: "Great experience overall, the root canal was handled perfectly." },
-      { id: 4, user_name: "Emma Davis", doctor_name: "Dr. David Parker", rating: 5, review_text: "Thorough cleaning and great advice on oral hygiene." }
-    ];
-    setReviews(dummyReviews);
-    setLoading(false);
-
-    const hiddenElements = document.querySelectorAll(`.${pageStyles.hidden}`);
-    hiddenElements.forEach(el => el.classList.add(pageStyles.show));
+    const fetchReviews = async () => {
+      try {
+        const res = await fetch("/api/ratings");
+        if (res.ok) {
+          const data = await res.json();
+          setReviews(data.ratings || []);
+        }
+      } catch (err) {
+        console.error("Failed to fetch reviews:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReviews();
   }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      setTimeout(() => {
+        const hiddenElements = document.querySelectorAll(`.${pageStyles.hidden}`);
+        hiddenElements.forEach(el => el.classList.add(pageStyles.show));
+      }, 100);
+    }
+  }, [loading]);
 
   return (
     <div className={pageStyles.main} style={{ paddingTop: "8rem" }}>
@@ -31,9 +41,9 @@ export default function Reviews() {
           
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem" }}>
             {loading ? (
-              <p style={{ textAlign: "center", fontSize: "1.6rem" }}>Loading reviews...</p>
+              <p style={{ textAlign: "center", fontSize: "1.6rem", gridColumn: "1 / -1" }}>Loading reviews...</p>
             ) : reviews.length === 0 ? (
-              <p style={{ textAlign: "center", fontSize: "1.6rem" }}>No reviews yet.</p>
+              <p style={{ textAlign: "center", fontSize: "1.6rem", gridColumn: "1 / -1" }}>No reviews yet.</p>
             ) : (
               reviews.map(review => (
                 <div key={review.id} className={`${pageStyles.hidden}`} style={{ background: "white", padding: "2rem", borderRadius: "10px", boxShadow: "0 4px 6px rgba(0,0,0,0.05)" }}>
